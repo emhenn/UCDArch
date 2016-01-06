@@ -101,47 +101,47 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Core\ContinuousIntegrationDeploymentHack.cs">
-		<Link>Core\ContinuousIntegrationDeploymentHack.cs</Link>
-	</Compile>
+      <Link>Core\ContinuousIntegrationDeploymentHack.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Properties\AssemblyInfo.cs">
-		<Link>Properties\AssemblyInfo.cs</Link>
-	</Compile>
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\DomainObjectDataHelper.cs">
-		<Link>Repository\DomainObjectDataHelper.cs</Link>
-	</Compile>
+      <Link>Repository\DomainObjectDataHelper.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\DomainObjectRepositoryTests.cs">
-		<Link>Repository\DomainObjectRepositoryTests.cs</Link>
-	</Compile>
+      <Link>Repository\DomainObjectRepositoryTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\DomainObjectRetrievalTests.cs">
-		<Link>Repository\DomainObjectRetrievalTests.cs</Link>
-	</Compile>
+      <Link>Repository\DomainObjectRetrievalTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\ObjectFlushTests.cs">
-		<Link>Repository\ObjectFlushTests.cs</Link>
-	</Compile>
+      <Link>Repository\ObjectFlushTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\UnitAssociationRepositoryTests.cs">
-		<Link>Repository\UnitAssociationRepositoryTests.cs</Link>
-	</Compile>
+      <Link>Repository\UnitAssociationRepositoryTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\UnitRepositoryTests.cs">
-		<Link>Repository\UnitRepositoryTests.cs</Link>
-	</Compile>
+      <Link>Repository\UnitRepositoryTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\Repository\UserRepositoryTests.cs">
-		<Link>Repository\UserRepositoryTests.cs</Link>
-	</Compile>
+      <Link>Repository\UserRepositoryTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\SampleMappings\Unit.cs">
-		<Link>SampleMappings\Unit.cs</Link>
-	</Compile>
+      <Link>SampleMappings\Unit.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\SampleMappings\UnitAssociation.cs">
-		<Link>SampleMappings\UnitAssociation.cs</Link>
-	</Compile>
+      <Link>SampleMappings\UnitAssociation.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\SampleMappings\UnitAssociationMap.cs">
-		<Link>SampleMappings\UnitAssociationMap.cs</Link>
-	</Compile>
+      <Link>SampleMappings\UnitAssociationMap.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\SampleMappings\UnitMap.cs">
-		<Link>SampleMappings\UnitMap.cs</Link>
-	</Compile>
+      <Link>SampleMappings\UnitMap.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.RegressionTests\SampleMappings\User.cs">
-		<Link>SampleMappings\User.cs</Link>
-	</Compile>
+      <Link>SampleMappings\User.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UCDArch_Net451.Data\UCDArch_Net451.Data.csproj">
@@ -182,6 +182,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

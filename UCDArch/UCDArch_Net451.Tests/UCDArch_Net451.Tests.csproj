@@ -145,35 +145,35 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\UCDArch.Tests\Properties\AssemblyInfo.cs">
-		<Link>Properties\AssemblyInfo.cs</Link>
-	</Compile>
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Core.DataAnnotationsValidator\CommonValidationAdapter\ValidatorTests.cs">
-		<Link>UCDArch.Core.DataAnnotationsValidator\CommonValidationAdapter\ValidatorTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Core.DataAnnotationsValidator\CommonValidationAdapter\ValidatorTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Core\DomainModel\BaseObjectEqualityComparerTests.cs">
-		<Link>UCDArch.Core\DomainModel\BaseObjectEqualityComparerTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Core\DomainModel\BaseObjectEqualityComparerTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Core\DomainModel\DomainObjectTests.cs">
-		<Link>UCDArch.Core\DomainModel\DomainObjectTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Core\DomainModel\DomainObjectTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Core\JsonNet\JsonSerializerTests.cs">
-		<Link>UCDArch.Core\JsonNet\JsonSerializerTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Core\JsonNet\JsonSerializerTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Core\SmartServiceLocatorTests.cs">
-		<Link>UCDArch.Core\SmartServiceLocatorTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Core\SmartServiceLocatorTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Web\ActionResults\JsonNetResultTests.cs">
-		<Link>UCDArch.Web\ActionResults\JsonNetResultTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Web\ActionResults\JsonNetResultTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Web\Controllers\ControllerTransactionTests.cs">
-		<Link>UCDArch.Web\Controllers\ControllerTransactionTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Web\Controllers\ControllerTransactionTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Web\Helpers\ValidationHelperTests.cs">
-		<Link>UCDArch.Web\Helpers\ValidationHelperTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Web\Helpers\ValidationHelperTests.cs</Link>
+    </Compile>
     <Compile Include="..\UCDArch.Tests\UCDArch.Web\ValidatorTests\MvcValidationAdapterTests.cs">
-		<Link>UCDArch.Web\ValidatorTests\MvcValidationAdapterTests.cs</Link>
-	</Compile>
+      <Link>UCDArch.Web\ValidatorTests\MvcValidationAdapterTests.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UCDArch_Net451.Core.DataAnnotationsValidator\UCDArch_Net451.Core.DataAnnotationsValidator.csproj">
@@ -213,6 +213,9 @@
   <ItemGroup>
     <None Include="..\UCDArch.Tests\App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
