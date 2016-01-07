@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "UCDArch.Core": { "target": "project" },
+    "UCDArch.Data": { "target": "project" },
+    "UCDArch.Web": { "target": "project" },
+    "UCDArch.Core.DataAnnotationsValidator": { "target": "project" },
+    "UCDArch.Web.Providers": { "target": "project" },
+    "UCDArch.Testing": { "target": "project" }
+  },
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+      }
+    }
+  }
+}

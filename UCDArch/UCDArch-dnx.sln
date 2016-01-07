@@ -19,6 +19,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Tests", "UCDArch.Te
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.RegressionTests", "UCDArch.RegressionTests\UCDArch.RegressionTests.xproj", "{E6723BC6-0B6A-4074-BC80-83002E59FB3C}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.ReferenceLinker", "UCDArch.ReferenceLinker\UCDArch.ReferenceLinker.xproj", "{FD2CF20C-C42A-4CC0-9879-9195F8938075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{E6723BC6-0B6A-4074-BC80-83002E59FB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6723BC6-0B6A-4074-BC80-83002E59FB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6723BC6-0B6A-4074-BC80-83002E59FB3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD2CF20C-C42A-4CC0-9879-9195F8938075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD2CF20C-C42A-4CC0-9879-9195F8938075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD2CF20C-C42A-4CC0-9879-9195F8938075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD2CF20C-C42A-4CC0-9879-9195F8938075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
