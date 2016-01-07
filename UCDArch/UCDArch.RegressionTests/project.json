@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "UCDArch.Core": { "target": "project" },
+    "UCDArch.Data": { "target": "project" },
+    "UCDArch.Testing": { "target": "project" },
+    "System.Data.SQLite": "1.0.99"
+  },
+  "frameworks": {
+    "net45": {
+      "dependencies": {
+      }
+    }
+  }
+}
