@@ -1,0 +1,17 @@
+{
+  "compilationOptions": {
+    "keyFile": "CAESDO.snk"
+  },
+  "dependencies": { },
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Configuration": "4.0.0.0",
+        "System.Data": "4.0.0.0",
+        "System.ServiceModel": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.ApplicationServices": "4.0.0.0"
+      }
+    }
+  }
+}

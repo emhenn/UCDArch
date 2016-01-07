@@ -11,6 +11,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Web", "UCDArch.Web\
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Core.DataAnnotationsValidator", "UCDArch.Core.DataAnnotationsValidator\UCDArch.Core.DataAnnotationsValidator.xproj", "{2375EEB6-CC3B-40C2-9A04-68629F14F443}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Web.Providers", "UCDArch.Web.Providers\UCDArch.Web.Providers.xproj", "{F43AA0A1-E25C-4010-9C2B-EC10166E0ACC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2375EEB6-CC3B-40C2-9A04-68629F14F443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2375EEB6-CC3B-40C2-9A04-68629F14F443}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2375EEB6-CC3B-40C2-9A04-68629F14F443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F43AA0A1-E25C-4010-9C2B-EC10166E0ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43AA0A1-E25C-4010-9C2B-EC10166E0ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43AA0A1-E25C-4010-9C2B-EC10166E0ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43AA0A1-E25C-4010-9C2B-EC10166E0ACC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
