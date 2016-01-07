@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "UCDArch.Core": { "target": "project" },
+    "UCDArch.Core.DataAnnotationsValidator": { "target": "project" },
+    "UCDArch.Web": { "target": "project" },
+    "UCDArch.Testing": { "target": "project" },
+    "MvcContrib.Mvc3.TestHelper-ci": "3.0.100"
+  },
+  "frameworks": {
+    "net45": {
+      "dependencies": {
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework": "1.0.0-*"
+      }
+    }
+  }
+}

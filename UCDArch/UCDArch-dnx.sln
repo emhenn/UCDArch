@@ -15,6 +15,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Web.Providers", "UC
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Testing", "UCDArch.Testing\UCDArch.Testing.xproj", "{CF433CBE-7B44-4531-B3CA-1E8893AE1EBD}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UCDArch.Tests", "UCDArch.Tests\UCDArch.Tests.xproj", "{0807DAC5-7DD5-481E-91C2-1F8DB0F3F4B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{CF433CBE-7B44-4531-B3CA-1E8893AE1EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF433CBE-7B44-4531-B3CA-1E8893AE1EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF433CBE-7B44-4531-B3CA-1E8893AE1EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0807DAC5-7DD5-481E-91C2-1F8DB0F3F4B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0807DAC5-7DD5-481E-91C2-1F8DB0F3F4B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0807DAC5-7DD5-481E-91C2-1F8DB0F3F4B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0807DAC5-7DD5-481E-91C2-1F8DB0F3F4B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
