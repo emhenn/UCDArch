@@ -1,0 +1,24 @@
+{
+  "compilationOptions": {
+    "keyFile": "CAESDO.snk"
+  },
+  "dependencies": {
+    "UCDArch.Core": { "target": "project" },
+    "UCDArch.Data": { "target": "project" },
+    "Newtonsoft.Json": "8.0.1",
+    "Castle.Core": "3.3.3",
+    "Castle.Windsor": "3.3.0"
+  },
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Runtime.Serialization": "4.0.0.0",
+        "System.ServiceModel": "4.0.0.0",
+        "System.Web": "4.0.0.0",
+        "System.Web.Helpers": "2.0.0.0",
+        "System.Web.Mvc": "5.1.0.0",
+        "System.Web.WebPages": "2.0.0.0"
+      }
+    }
+  }
+}
