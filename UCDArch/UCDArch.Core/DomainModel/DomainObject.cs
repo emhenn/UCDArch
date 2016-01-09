@@ -81,7 +81,7 @@ namespace UCDArch.Core.DomainModel
         protected override IEnumerable<PropertyInfo> GetTypeSpecificSignatureProperties()
         {
             return GetType().GetProperties()
-                .Where(p => Attribute.IsDefined(p, typeof(DomainSignatureAttribute), true));
+                .Where(p => p.IsDefined(typeof(DomainSignatureAttribute), true));
         }
 
         public override bool Equals(object obj)
