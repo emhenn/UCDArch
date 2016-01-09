@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace UCDArch.Core.DomainModel
 {
@@ -14,7 +15,11 @@ namespace UCDArch.Core.DomainModel
     /// <remarks>
     /// This is intended for use with <see cref="DomainObject" />.
     /// </remarks>
+#if !DNXCORE50
     [Serializable]
+#else
+    [DataContract]
+#endif
     public class DomainSignatureAttribute : Attribute { }
 
     /// <summary>
@@ -26,14 +31,22 @@ namespace UCDArch.Core.DomainModel
     /// base class leverages this assumption.  If you want an entity with a type other 
     /// than int, such as string, then use <see cref="DomainObjectWithTypedId{IdT}" /> instead.
     /// </summary>
+#if !DNXCORE50
     [Serializable]
+#else
+    [DataContract]
+#endif
     public abstract class DomainObject : DomainObjectWithTypedId<int> { }
 
     /// <summary>
     /// For a discussion of this object, see 
     /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
     /// </summary>
+#if !DNXCORE50
     [Serializable]
+#else
+    [DataContract]
+#endif
     public abstract class DomainObjectWithTypedId<IdT> : ValidatableObject, IDomainObjectWithTypedId<IdT>
     {
         #region IDomainObjectWithTypedId Members
@@ -49,6 +62,9 @@ namespace UCDArch.Core.DomainModel
         /// </summary>
         [XmlIgnore]
         [JsonProperty]
+#if DNXCORE
+        [DataMember]
+#endif
         public virtual IdT Id { get; protected set; }
 
         /// <summary>
@@ -61,9 +77,9 @@ namespace UCDArch.Core.DomainModel
             return Equals(Id, default(IdT)) || Id.Equals(default(IdT));
         }
 
-        #endregion
+#endregion
 
-        #region DomainObject comparison support
+#region DomainObject comparison support
 
         /// <summary>
         /// The property getter for SignatureProperties should ONLY compare the properties which make up 
@@ -150,6 +166,6 @@ namespace UCDArch.Core.DomainModel
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
 
-        #endregion
+#endregion
     }
 }

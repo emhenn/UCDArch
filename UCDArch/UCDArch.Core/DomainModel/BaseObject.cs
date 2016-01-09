@@ -2,6 +2,7 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace UCDArch.Core.DomainModel
@@ -14,7 +15,11 @@ namespace UCDArch.Core.DomainModel
     /// and http://groups.google.com/group/sharp-architecture/browse_thread/thread/f76d1678e68e3ece?hl=en for 
     /// an in depth and conclusive resolution.
     /// </summary>
+#if !DNXCORE50
     [Serializable]
+#else
+    [DataContract]
+#endif
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseObject
     {
