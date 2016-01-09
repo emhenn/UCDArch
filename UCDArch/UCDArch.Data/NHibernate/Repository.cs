@@ -5,6 +5,7 @@ using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
+using UCDArch.Core;
 using UCDArch.Core.DomainModel;
 using UCDArch.Core.PersistanceSupport;
 
