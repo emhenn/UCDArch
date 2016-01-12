@@ -1,7 +1,4 @@
 using System;
-#if !DNXCORE50
-using Microsoft.Practices.ServiceLocation;
-#endif
 
 namespace UCDArch.Core
 {

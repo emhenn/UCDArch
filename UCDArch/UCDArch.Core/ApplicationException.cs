@@ -1,5 +1,4 @@
-﻿#if DNXCORE50
-using System;
+﻿using System;
 
 namespace UCDArch.Core
 {
@@ -10,4 +9,3 @@ namespace UCDArch.Core
         public ApplicationException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
-#endif

@@ -11,10 +11,11 @@
         "System.ComponentModel.DataAnnotations": "4.0.0.0"
       }
     },
-    "dnxcore50": {
+    "net46": {
       "dependencies": {
         "System.ComponentModel.Annotations": "4.0.10"
       }
-    }
+    },
+    "dnx46": { }
   }
 }
