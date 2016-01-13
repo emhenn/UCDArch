@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Practices.ServiceLocation;
 
 namespace UCDArch.Core
 {
