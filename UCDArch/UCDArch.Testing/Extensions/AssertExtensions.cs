@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime;
+using Xunit;
 
 namespace UCDArch.Testing.Extensions
 {
@@ -7,12 +8,12 @@ namespace UCDArch.Testing.Extensions
     {
         public static void AssertContains(this ICollection<string> list, string str)
         {
-            Assert.IsTrue(list.Contains(str), "Expect value \"" + str + "\" not found.");
+            Assert.True(list.Contains(str), "Expect value \"" + str + "\" not found.");
         }
 
         public static void AssertContains(this ICollection<string> list, string str, string message)
         {
-            Assert.IsTrue(list.Contains(str), message);
+            Assert.True(list.Contains(str), message);
         }
 
         /// <summary>
@@ -22,10 +23,10 @@ namespace UCDArch.Testing.Extensions
         /// <param name="errors">The errors.</param>
         public static void AssertErrorsAre(this ICollection<string> list, params string[] errors)
         {
-            Assert.AreEqual(list.Count, errors.Length, "Number of error messages do not match");
+            Assert.Equal(list.Count, errors.Length);
             foreach (var error in errors)
             {
-                Assert.IsTrue(list.Contains(error), "Expected error \"" + error + "\" not found." + "Found:" + list.ParseList());
+                Assert.True(list.Contains(error), "Expected error \"" + error + "\" not found." + "Found:" + list.ParseList());
             }
         }
 

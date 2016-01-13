@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Castle.Windsor;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate.Cfg;
 using NHibernate.Stat;
 using UCDArch.Core.PersistanceSupport;
@@ -38,9 +37,8 @@ namespace UCDArch.Testing
         }
 
         /// <summary>
-        /// Creates the DB.
+        /// Creates the DB.  Call from parameterless constructor of subclasses - TestInitialize not supported in XUnit
         /// </summary>
-        [TestInitialize]
         public void CreateDB()
         {
             new NHibernate.Tool.hbm2ddl.SchemaExport(Configuration).Execute(false, true, false,

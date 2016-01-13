@@ -9,15 +9,12 @@
     "UCDArch.Web": { "target": "project" },
     "Castle.Core": "3.3.3",
     "Castle.Windsor": "3.3.0",
-    "RhinoMocks": "3.6.0"
+    "RhinoMocks": "3.6.0",
+    "System.Runtime": "4.0.0",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
   },
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-      },
-      "dependencies": {
-        "Microsoft.VisualStudio.QualityTools.UnitTestFramework": "1.0.0-*"
-      }
-    }
+    "dnx46": { }
   }
 }
