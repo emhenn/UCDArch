@@ -1,18 +1,17 @@
 using System;
 using System.IO;
 using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcContrib.TestHelper;
 using Rhino.Mocks;
 using UCDArch.Core;
 using UCDArch.Core.PersistanceSupport;
 using UCDArch.Testing;
 using UCDArch.Web.Attributes;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Web.Controllers
 {
-    [TestClass]
-    public class ControllerTransactionTests
+    public class ControllerTransactionTests : IDisposable
     {
         private IDbContext _dbContext;
         private TestControllerBuilder _builder;
@@ -21,9 +20,7 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         private static int _commitTransactionCount;
         private static int _closeSessionCount;
 
-
-        [TestInitialize]
-        public void Setup()
+        public ControllerTransactionTests()
         {
             _builder = new TestControllerBuilder();
 
@@ -44,57 +41,92 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
             _dbContext.Stub(x => x.CloseSession()).Repeat.Any().WhenCalled(x=> _closeSessionCount++);
         }
 
-        [TestCleanup]
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    TearDown();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ControllerTransactionTests() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        void IDisposable.Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+
         public void TearDown()
         {
             _beginTransactionCount = 0;
             _commitTransactionCount = 0;
             _closeSessionCount = 0;
         }
+        #endregion
 
         /// <summary>
         /// Controller closes session when calling method without manual transaction attribute.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCloseSessionWhenCallingMethodWithoutManualTransactionAttribute()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithoutManualTransactionAttribute");
 
-            Assert.AreEqual(1, _closeSessionCount);
+            Assert.Equal(1, _closeSessionCount);
             //_dbContext.AssertWasCalled(x => x.CloseSession(), x => x.Repeat.Once());
         }
 
         /// <summary>
         /// Controller DOESN'T close session when calling method with manual transaction attribute.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerDoesNotCloseSessionWhenCallingMethodWithManualTransactionAttribute()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithManualTransactionAttribute");
 
-            Assert.AreEqual(0, _closeSessionCount);
+            Assert.Equal(0, _closeSessionCount);
             //_dbContext.AssertWasNotCalled(a => a.CloseSession());
         }
 
         /// <summary>
         /// Controller begins the transaction when calling method without manual transaction attribute.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerBeginsTransactionWhenCallingMethodWithoutManualTransactionAttribute()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithoutManualTransactionAttribute");
 
-            Assert.AreEqual(1, _beginTransactionCount);
+            Assert.Equal(1, _beginTransactionCount);
             //_dbContext.AssertWasCalled(a=>a.BeginTransaction(), a=>a.Repeat.Once());
         }
 
         /// <summary>
         /// Controller commits the transaction when calling method without manual transaction attribute.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCommitsTransactionWhenCallingMethodWithoutManualTransactionAttribute()
         {
             //Assume the transaction has been opened correctly
@@ -103,7 +135,7 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithoutManualTransactionAttribute");
 
-            Assert.AreEqual(1, _commitTransactionCount);
+            Assert.Equal(1, _commitTransactionCount);
             //_dbContext.AssertWasCalled(a => a.CommitTransaction(), a => a.Repeat.Once());
         }
 
@@ -111,13 +143,13 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         /// Controller does not begin the transaction when calling method with manual transaction attribute.
         /// This is a case where the begin and commit/rollback would be handeled manually.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerDoesNotBeginTransactionWhenCallingMethodWithManualTransactionAttribute()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithManualTransactionAttribute");
 
-            Assert.AreEqual(0, _beginTransactionCount);
+            Assert.Equal(0, _beginTransactionCount);
             //_dbContext.AssertWasNotCalled(a => a.BeginTransaction());
         }
 
@@ -125,7 +157,7 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         /// Controller does not commit the transaction when calling method with manual transaction attribute.
         /// This is a case where the begin and commit/rollback would be handeled manually.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerDoesNotCommitTransactionWhenCallingMethodWithManualTransactionAttribute()
         {
             //Assume the transaction has been opened correctly
@@ -134,7 +166,7 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithManualTransactionAttribute");
 
-            Assert.AreEqual(0, _commitTransactionCount);
+            Assert.Equal(0, _commitTransactionCount);
             //_dbContext.AssertWasNotCalled(a=>a.CommitTransaction());
         }
 
@@ -142,13 +174,13 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         /// Controller calls begin transaction only once when calling method with transaction attribute.
         /// This has the [Transaction] Attribute, but we still want the begin/commit to only happen once.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCallsBeginTransactionOnlyOnceWhenCallingMethodWithTransactionAttribute()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithTransactionAttribute");
 
-            Assert.AreEqual(1, _beginTransactionCount);
+            Assert.Equal(1, _beginTransactionCount);
             //_dbContext.AssertWasCalled(a => a.BeginTransaction(), a=>a.Repeat.Once());
         }
 
@@ -156,7 +188,7 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         /// Controller calls commit transaction only once when calling method with transaction attribute.
         /// This has the [Transaction] Attribute, but we still want the begin/commit to only happen once.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCallsCommitTransactionOnlyOnceWhenCallingMethodWithTransactionAttribute()
         {
             //Assume the transaction has been opened correctly
@@ -165,33 +197,33 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithTransactionAttribute");
 
-            Assert.AreEqual(1, _commitTransactionCount);
+            Assert.Equal(1, _commitTransactionCount);
             //_dbContext.AssertWasCalled(a => a.CommitTransaction(), a=>a.Repeat.Once());
         }
 
         /// <summary>
         /// Controller calls begin transaction only once when calling method with manual transaction attribute and transaction scope.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCallsBeginTransactionOnlyOnceWhenCallingMethodWithManualTransactionAttributeAndTransactionScope()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithManualTransactionAttributeAndTransactionScope");
 
-            Assert.AreEqual(1, _beginTransactionCount);
+            Assert.Equal(1, _beginTransactionCount);
             //_dbContext.AssertWasCalled(a => a.BeginTransaction(), a => a.Repeat.Once());
         }
 
         /// <summary>
         /// Controller calls commit transaction only once when calling method with manual transaction attribute and transaction scope.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCallsCommitTransactionOnlyOnceWhenCallingMethodWithManualTransactionAttributeAndTransactionScope()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithManualTransactionAttributeAndTransactionScope");
 
-            Assert.AreEqual(1, _commitTransactionCount);
+            Assert.Equal(1, _commitTransactionCount);
             //_dbContext.AssertWasCalled(a => a.CommitTransaction(), a => a.Repeat.Once());
         }
 
@@ -200,13 +232,13 @@ namespace UCDArch.Tests.UCDArch.Web.Controllers
         /// Controller calls begin transaction twice when calling method without manual transaction attribute and transaction scope.
         /// Assuming that this is the correct behaviour.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ControllerCallsBeginTransactionTwiceWhenCallingMethodWithoutManualTransactionAttributeAndTransactionScope()
         {
             _controller.ActionInvoker.InvokeAction(_controller.ControllerContext,
                                                    "MethodWithoutManualTransactionAttributeAndTransactionScope");
 
-            Assert.AreEqual(2, _beginTransactionCount);
+            Assert.Equal(2, _beginTransactionCount);
             //_dbContext.AssertWasCalled(a => a.BeginTransaction(), a => a.Repeat.Twice());
         }
 

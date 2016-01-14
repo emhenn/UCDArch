@@ -4,13 +4,15 @@
     "UCDArch.Core.DataAnnotationsValidator": { "target": "project" },
     "UCDArch.Web": { "target": "project" },
     "UCDArch.Testing": { "target": "project" },
-    "MvcContrib.Mvc3.TestHelper-ci": "3.0.100"
+    "MvcContrib.Mvc3.TestHelper-ci": "3.0.100",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
+  },
+  "commands": {
+    "test": "xunit.runner.dnx"
   },
   "frameworks": {
     "dnx46": {
-      "dependencies": {
-        "Microsoft.VisualStudio.QualityTools.UnitTestFramework": "1.0.0-*"
-      }
     }
   }
 }

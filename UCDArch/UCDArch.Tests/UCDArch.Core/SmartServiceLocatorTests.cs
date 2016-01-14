@@ -1,25 +1,23 @@
 using Castle.Windsor;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using UCDArch.Core;
 using UCDArch.Core.CommonValidator;
 using UCDArch.Core.DataAnnotationsValidator.CommonValidatorAdapter;
 using UCDArch.Web.IoC;
 using Castle.MicroKernel.Registration;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Core
 {
-    [TestClass]
     public class SmartServiceLocatorTests
     {
-        [TestInitialize]
-        public void Setup()
+        public SmartServiceLocatorTests()
         {
             ServiceLocator.SetLocatorProvider(null);
         }
 
-        [TestMethod]
+        [Fact]
         public void WillBeInformedIfServiceLocatorNotInitialized()
         {
             bool exceptionThrown = false;
@@ -31,13 +29,13 @@ namespace UCDArch.Tests.UCDArch.Core
             catch (NullReferenceException e)
             {
                 exceptionThrown = true;
-                Assert.IsTrue(e.Message.Contains("ServiceLocator has not been initialized"));
+                Assert.True(e.Message.Contains("ServiceLocator has not been initialized"));
             }
 
-            Assert.IsTrue(exceptionThrown);
+            Assert.True(exceptionThrown);
         }
 
-        [TestMethod]
+        [Fact]
         public void WillBeInformedIfServiceNotRegistered()
         {
             bool exceptionThrown = false;
@@ -52,13 +50,13 @@ namespace UCDArch.Tests.UCDArch.Core
             catch (ActivationException e)
             {
                 exceptionThrown = true;
-                Assert.IsTrue(e.Message.Contains("IValidator could not be located"));
+                Assert.True(e.Message.Contains("IValidator could not be located"));
             }
 
-            Assert.IsTrue(exceptionThrown);
+            Assert.True(exceptionThrown);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanReturnServiceIfInitializedAndRegistered()
         {
             IWindsorContainer container = new WindsorContainer();
@@ -68,7 +66,7 @@ namespace UCDArch.Tests.UCDArch.Core
 
             IValidator validatorService = SmartServiceLocator<IValidator>.GetService();
 
-            Assert.IsNotNull(validatorService);
+            Assert.NotNull(validatorService);
         }
     }
 }

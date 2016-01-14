@@ -1,14 +1,13 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Core.DomainModel;
 using UCDArch.Testing;
 using Newtonsoft.Json;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Core.JsonNet
 {
-    [TestClass]
     public class JsonSerializerTests
     {
-        [TestMethod]
+        [Fact]
         public void DomainObjectReturnsJustId()
         {
             var obj = new SimpleDomainObject();
@@ -19,10 +18,10 @@ namespace UCDArch.Tests.UCDArch.Core.JsonNet
 
             const string jsonString = "{\"Id\":42}";
 
-            Assert.AreEqual(jsonString, result);
+            Assert.Equal(jsonString, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddingSimplePropertyReturnsJustId()
         {
             var obj = new NamedDomainObject {Name = "TestName"};
@@ -33,10 +32,10 @@ namespace UCDArch.Tests.UCDArch.Core.JsonNet
 
             const string jsonString = "{\"Id\":42}";
 
-            Assert.AreEqual(jsonString, result);
+            Assert.Equal(jsonString, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddingSimplePropertyWithJsonAttributeReturnsIdAndName()
         {
             var obj = new NamedDomainObjectWithPropertyIncluded { Name = "TestName" };
@@ -47,7 +46,7 @@ namespace UCDArch.Tests.UCDArch.Core.JsonNet
 
             const string jsonString = "{\"Name\":\"TestName\",\"Id\":42}";
 
-            Assert.AreEqual(jsonString, result);
+            Assert.Equal(jsonString, result);
         }
     }
 

@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Core.DomainModel;
 using UCDArch.Testing;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Core.DomainModel
 {
-    [TestClass]
     public class BaseObjectEqualityComparerTests
     {
-        [TestMethod]
+        [Fact]
         public void CanCompareNulls()
         {
             var comparer = new BaseObjectEqualityComparer<BaseObject>();
 
-            Assert.IsTrue(comparer.Equals(null, null));
-            Assert.IsFalse(comparer.Equals(null, new ConcreteBaseObject()));
-            Assert.IsFalse(comparer.Equals(new ConcreteBaseObject(), null));
+            Assert.True(comparer.Equals(null, null));
+            Assert.False(comparer.Equals(null, new ConcreteBaseObject()));
+            Assert.False(comparer.Equals(new ConcreteBaseObject(), null));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCompareBaseObjects()
         {
             var comparer = new BaseObjectEqualityComparer<BaseObject>();
@@ -33,13 +32,13 @@ namespace UCDArch.Tests.UCDArch.Core.DomainModel
                               {
                                   Name = "Whatever"
                               };
-            Assert.IsTrue(comparer.Equals(object1, object2));
+            Assert.True(comparer.Equals(object1, object2));
 
             object2.Name = "Mismatch";
-            Assert.IsFalse(comparer.Equals(object1, object2));
+            Assert.False(comparer.Equals(object1, object2));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCompareEntitiesWithNoDomainSignatureProperties()
         {
             var comparer = new BaseObjectEqualityComparer<BaseObject>();
@@ -52,14 +51,14 @@ namespace UCDArch.Tests.UCDArch.Core.DomainModel
                               {
                                   Name = "asdf"
                               };
-            Assert.IsFalse(comparer.Equals(object1, object2));
+            Assert.False(comparer.Equals(object1, object2));
 
             EntityIdSetter.SetIdOf(object1, 1);
             EntityIdSetter.SetIdOf(object2, 1);
-            Assert.IsTrue(comparer.Equals(object1, object2));
+            Assert.True(comparer.Equals(object1, object2));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCompareEntitiesWithDomainSignatureProperties()
         {
             var comparer = new BaseObjectEqualityComparer<DomainObject>();
@@ -72,17 +71,17 @@ namespace UCDArch.Tests.UCDArch.Core.DomainModel
                               {
                                   Name = "Whatever"
                               };
-            Assert.IsTrue(comparer.Equals(object1, object2));
+            Assert.True(comparer.Equals(object1, object2));
 
             object2.Name = "Mismatch";
-            Assert.IsFalse(comparer.Equals(object1, object2));
+            Assert.False(comparer.Equals(object1, object2));
 
             EntityIdSetter.SetIdOf(object1, 1);
             EntityIdSetter.SetIdOf(object2, 1);
-            Assert.IsTrue(comparer.Equals(object1, object2));
+            Assert.True(comparer.Equals(object1, object2));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanBeUsedByLinqSetOperatorsSuchAsIntersect()
         {
             IList<ConcreteEntityWithDomainSignatureProperties> objects1 =
@@ -110,13 +109,13 @@ namespace UCDArch.Tests.UCDArch.Core.DomainModel
             EntityIdSetter.SetIdOf(object3, 2);
             objects2.Add(object3);
 
-            Assert.AreEqual(1, objects1.Intersect(objects2,
+            Assert.Equal(1, objects1.Intersect(objects2,
                                                   new BaseObjectEqualityComparer
                                                       <ConcreteEntityWithDomainSignatureProperties>()).Count());
-            Assert.AreEqual(objects1.Intersect(objects2,
+            Assert.Equal(objects1.Intersect(objects2,
                                                new BaseObjectEqualityComparer
                                                    <ConcreteEntityWithDomainSignatureProperties>()).First(), object1);
-            Assert.AreEqual(objects1.Intersect(objects2,
+            Assert.Equal(objects1.Intersect(objects2,
                                                new BaseObjectEqualityComparer
                                                    <ConcreteEntityWithDomainSignatureProperties>()).First(), object3);
         }

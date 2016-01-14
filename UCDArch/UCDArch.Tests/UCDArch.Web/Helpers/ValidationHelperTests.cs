@@ -1,20 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Testing;
 using UCDArch.Web.Helpers;
 using UCDArch.Core.DomainModel;
 using Validator = UCDArch.Core.DataAnnotationsValidator.CommonValidatorAdapter.Validator;
-
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Web.Helpers
 {
-    [TestClass]
     public class ValidationHelperTests
     {
-        [TestInitialize]
-        public void Setup()
+        public ValidationHelperTests()
         {
             ServiceLocatorInitializer.Init();
         }
@@ -22,7 +19,7 @@ namespace UCDArch.Tests.UCDArch.Web.Helpers
         /// <summary>
         /// Determines whether this instance [can validate object].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanValidateObject()
         {
             var validator = new Validator();
@@ -33,7 +30,7 @@ namespace UCDArch.Tests.UCDArch.Web.Helpers
                 FirstName = "ThisFirstNameIsTooLong",
                 Street = null
             };
-            Assert.IsFalse(validator.IsValid(invalidObject));
+            Assert.False(validator.IsValid(invalidObject));
 
             var validObject = new SomeObject
             {
@@ -41,13 +38,13 @@ namespace UCDArch.Tests.UCDArch.Web.Helpers
                 FirstName = "First",
                 Street = "SomeStreet"
             };
-            Assert.IsTrue(validator.IsValid(validObject));
+            Assert.True(validator.IsValid(validObject));
         }
 
         /// <summary>
         /// Determines whether this instance [can transfer validation results to model state].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanTransferValidationResultsToModelState()
         {            
 
@@ -62,19 +59,19 @@ namespace UCDArch.Tests.UCDArch.Web.Helpers
                 Street = " ",
                 MiddleName = "valid"
             };
-            Assert.IsFalse(validator.IsValid(invalidObject));
+            Assert.False(validator.IsValid(invalidObject));
 
             var results = validator.ValidationResultsFor(invalidObject);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(3, results.Count, "Wrong number of validation messages encountered.");
+            Assert.NotNull(results);
+            Assert.Equal(3, results.Count);
 
             ModelStateDictionary modelState = new ModelStateDictionary();
-            Assert.IsNotNull(modelState);
-            Assert.AreEqual(0, modelState.Values.Count);
+            Assert.NotNull(modelState);
+            Assert.Equal(0, modelState.Values.Count);
 
             invalidObject.TransferValidationMessagesTo(modelState);
 
-            Assert.AreEqual(3, modelState.Values.Count);
+            Assert.Equal(3, modelState.Values.Count);
 
             var resultsList = new List<string>();
             foreach (var result in modelState.Values)
@@ -91,10 +88,10 @@ namespace UCDArch.Tests.UCDArch.Web.Helpers
                                  "The field FirstName must be a string with a maximum length of 10."
                              };
 
-            Assert.AreEqual(resultsList.Count, errors.Length, "Number of error messages do not match");
+            Assert.Equal(resultsList.Count, errors.Length);
             foreach (var error in errors)
             {
-                Assert.IsTrue(resultsList.Contains(error), "Expected error \"" + error + "\" not found");
+                Assert.True(resultsList.Contains(error), "Expected error \"" + error + "\" not found");
             }
 
 

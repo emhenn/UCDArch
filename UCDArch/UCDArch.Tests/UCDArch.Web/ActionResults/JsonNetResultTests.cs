@@ -1,62 +1,61 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using UCDArch.Web.ActionResults;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Web.ActionResults
 {
-    [TestClass]
     public class JsonNetResultTests
     {
         #region JsonResultString Tests
         /// <summary>
         /// Result Returns Data Was Null For NullData.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ResultReturnsDataWasNullForNullData()
         {
             var result = new JsonNetResult(null);
 
-            Assert.AreEqual("[Data was Null]", result.JsonResultString);
+            Assert.Equal("[Data was Null]", result.JsonResultString);
         }
 
         /// <summary>
         /// Result Return JsonString When Data Has One Property.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ResultReturnJsonStringWhenDataHasOneProperty()
         {
             var sampleClass = new SampleClassWithOneJsonProperty();
 
             var result = new JsonNetResult(sampleClass);
 
-            Assert.AreEqual("{\"Name\":\"SampleName\"}", result.JsonResultString);
+            Assert.Equal("{\"Name\":\"SampleName\"}", result.JsonResultString);
 
         }
 
         /// <summary>
         /// Result Return JsonString When Data has Multiple Properties .
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ResultReturnJsonStringWhenDataHasMultipleProperties()
         {
             var sampleClass = new SampleClassWithMultipleJsonProperties();
 
             var result = new JsonNetResult(sampleClass);
 
-            Assert.AreEqual("{\"Name\":\"SampleName\",\"FavoriteNumber\":42}", result.JsonResultString);
+            Assert.Equal("{\"Name\":\"SampleName\",\"FavoriteNumber\":42}", result.JsonResultString);
         }
 
         /// <summary>
         /// Result Return JsonString When Data Has Sub Values
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ResultReturnJsonStringWhenDataHasSubValues()
         {
             var sampleClass = new SampleClassWithSubJsonPropert();
 
             var result = new JsonNetResult(sampleClass);
 
-            Assert.AreEqual("{\"Country\":\"USA\",\"FavoriteCity\":\"SampleCity\"}", result.JsonResultString);
+            Assert.Equal("{\"Country\":\"USA\",\"FavoriteCity\":\"SampleCity\"}", result.JsonResultString);
         }
 
         #endregion JsonResultString Tests

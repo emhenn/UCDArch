@@ -1,31 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Core.CommonValidator;
 using Validator = UCDArch.Core.DataAnnotationsValidator.CommonValidatorAdapter.Validator;
+using Xunit;
 
 namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAdapter
 {
-    [TestClass]
     public class ValidatorTests
     {
-        [TestMethod]
+        [Fact]
         public void CanValidateObject()
         {
             var validator = new Validator();
 
             var invalidObject = new SomeObject();
-            Assert.IsFalse(validator.IsValid(invalidObject));
+            Assert.False(validator.IsValid(invalidObject));
 
             var validObject = new SomeObject
             {
                 Name = "ValidName"
             };
-            Assert.IsTrue(validator.IsValid(validObject));
+            Assert.True(validator.IsValid(validObject));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRetriveValiationResults()
         {
             var validator = new Validator();
@@ -33,10 +32,10 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             var invalidObject = new SomeObject();
             ICollection<IValidationResult> results = validator.ValidationResultsFor(invalidObject);
 
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("Name", results.First().PropertyName);
-            Assert.AreEqual(typeof(SomeObject), results.First().ClassContext);
-            Assert.AreEqual("Dude...the name please!!", results.First().Message);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("Name", results.First().PropertyName);
+            Assert.Equal(typeof(SomeObject), results.First().ClassContext);
+            Assert.Equal("Dude...the name please!!", results.First().Message);
         }
 
         #region CompleteObject Tests
@@ -44,7 +43,7 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
         /// <summary>
         /// Determines whether this instance [can validate complete object].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanValidateCompleteObject()
         {
             var validator = new Validator();
@@ -52,13 +51,13 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             var invalidObject = CreateValidCompleteObject();
             invalidObject.RequiredValidatorString = null;
 
-            Assert.IsFalse(validator.IsValid(invalidObject));
+            Assert.False(validator.IsValid(invalidObject));
 
             var validObject = CreateValidCompleteObject();
 
             var validationErrors = validator.ValidationResultsFor(validObject);
 
-            Assert.IsTrue(validator.IsValid(validObject));
+            Assert.True(validator.IsValid(validObject));
         }
 
         #region Required Attribute tests
@@ -66,112 +65,111 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
         /// <summary>
         /// Validates the required attribute null test.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRequiredAttributeNullTest()
         {
             var validator = new Validator();
             var objectTotest = CreateValidCompleteObject();
             objectTotest.RequiredValidatorString = null;
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredValidatorString", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("The RequiredValidatorString field is required.", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RequiredValidatorString", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("The RequiredValidatorString field is required.", results.First().Message);
         }
 
         /// <summary>
         /// Validates the required attribute empty test.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRequiredAttributeEmptyTest()
         {
             var validator = new Validator();
             var objectTotest = CreateValidCompleteObject();
             objectTotest.RequiredValidatorString = string.Empty;
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredValidatorString", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("The RequiredValidatorString field is required.", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RequiredValidatorString", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("The RequiredValidatorString field is required.", results.First().Message);
         }
 
         /// <summary>
         /// Validates the required attribute spaces only test.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRequiredAttributeSpacesOnlyTest()
         {
             var validator = new Validator();
             var objectTotest = CreateValidCompleteObject();
             objectTotest.RequiredValidatorString = "    ";
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredValidatorString", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("The RequiredValidatorString field is required.", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RequiredValidatorString", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("The RequiredValidatorString field is required.", results.First().Message);
         }
 
         /// <summary>
         /// Validates the required attribute overide message test.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRequiredAttributeOverideMessageTest()
         {
             var validator = new Validator();
             var objectTotest = CreateValidCompleteObject();
             objectTotest.RequiredValidatorSpecialMessage = "    ";
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredValidatorSpecialMessage", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("Special Error message here!", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RequiredValidatorSpecialMessage", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("Special Error message here!", results.First().Message);
         }
 
         /// <summary>
         /// Validates the required attribute null list.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRequiredAttributeNullList()
         {
             var validator = new Validator();
             var objectTotest = CreateValidCompleteObject();
             objectTotest.RequiredListString = null;
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredListString", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("The RequiredListString field is required.", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RequiredListString", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("The RequiredListString field is required.", results.First().Message);
         }
 
-        /// <summary>
-        /// Validates the required attribute empty list.
-        /// </summary>
-        [TestMethod, Ignore] //Ignore vecause data annotations does not check list length
-        public void ValidateRequiredAttributeEmptyList()
-        {
-            var validator = new Validator();
-            var objectTotest = CreateValidCompleteObject();
-            objectTotest.RequiredListString = new List<string>();
-            ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RequiredListString", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("may not be null or empty", results.First().Message);
-        }
-
+        ///// <summary>
+        ///// Validates the required attribute empty list.
+        ///// </summary>
+        //[Fact] //Ignore vecause data annotations does not check list length
+        //public void ValidateRequiredAttributeEmptyList()
+        //{
+        //    var validator = new Validator();
+        //    var objectTotest = CreateValidCompleteObject();
+        //    objectTotest.RequiredListString = new List<string>();
+        //    ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
+        //    Assert.NotNull(results);
+        //    Assert.Equal(1, results.Count);
+        //    Assert.Equal("RequiredListString", results.First().PropertyName);
+        //    Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+        //    Assert.Equal("may not be null or empty", results.First().Message);
+        //}
         #endregion Required Attribute tests
 
         #region RangeDouble Attribute tests
         /// <summary>
         /// Validates the range double is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleIsValidTests()
         {
             var validator = new Validator();
@@ -180,7 +178,7 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidator = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
 
         }
@@ -188,7 +186,7 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
         /// <summary>
         /// Validates the range double is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleIsNotValidTests()
         {
             var validator = new Validator();
@@ -198,18 +196,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidator = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidator", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidator must be between 1.01 and 2.5.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidator", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidator must be between 1.01 and 2.5.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double min only is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleMinOnlyIsValidTests()
         {
             var validator = new Validator();
@@ -218,14 +216,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorMinOnly = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double min only is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleMinOnlyIsNotValidTests()
         {
             var validator = new Validator();
@@ -235,18 +233,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorMinOnly = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorMinOnly", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorMinOnly must be between 3 and 1.79769313486232E+308.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorMinOnly", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorMinOnly must be between 3 and 1.79769313486232E+308.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double max only is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleMaxOnlyIsValidTests()
         {
             var validator = new Validator();
@@ -255,14 +253,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorMaxOnly = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double max only is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleMaxOnlyIsNotValidTests()
         {
             var validator = new Validator();
@@ -272,18 +270,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorMaxOnly = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorMaxOnly", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorMaxOnly must be between -1.79769313486232E+308 and 3.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorMaxOnly", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorMaxOnly must be between -1.79769313486232E+308 and 3.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double nullable is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleNullableIsValidTests()
         {
             var validator = new Validator();
@@ -292,14 +290,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorNullable = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double nullable is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleNullableIsNotValidTests()
         {
             var validator = new Validator();
@@ -309,18 +307,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorNullable = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorNullable", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorNullable must be between 3 and 4.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorNullable", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorNullable must be between 3 and 4.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double special message is used when not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleSpecialMessageIsNotValidTests()
         {
             var validator = new Validator();
@@ -328,33 +326,33 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
 
             objectTotest.RangeDoubleValidatorSpecialMessage = 2;
             ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-            Assert.IsNotNull(results);
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("RangeDoubleValidatorSpecialMessage", results.First().PropertyName);
-            Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext);
-            Assert.AreEqual("Special Error message here!", results.First().Message);
+            Assert.NotNull(results);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("RangeDoubleValidatorSpecialMessage", results.First().PropertyName);
+            Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+            Assert.Equal("Special Error message here!", results.First().Message);
         }
 
-        /// <summary>
-        /// Validates the range double string is valid tests.
-        /// </summary>
-        [TestMethod, Ignore] //DataAnnotations does not validate strings as doubles
-        public void ValidateRangeDoubleStringIsValidTests()
-        {
-            var validator = new Validator();
-            var objectTotest = CreateValidCompleteObject();
-            var doubleList = new List<string> { null, "3", "3.5", "4", "3.0E2" };
-            foreach (var list in doubleList)
-            {
-                objectTotest.RangeDoubleValidatorString = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
-            }
-        }
+        ///// <summary>
+        ///// Validates the range double string is valid tests.
+        ///// </summary>
+        //[Fact] //DataAnnotations does not validate strings as doubles
+        //public void ValidateRangeDoubleStringIsValidTests()
+        //{
+        //    var validator = new Validator();
+        //    var objectTotest = CreateValidCompleteObject();
+        //    var doubleList = new List<string> { null, "3", "3.5", "4", "3.0E2" };
+        //    foreach (var list in doubleList)
+        //    {
+        //        objectTotest.RangeDoubleValidatorString = list;
+        //        Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+        //    }
+        //}
 
         /// <summary>
         /// Validates the range double string is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleStringIsNotValidTests()
         {
             var validator = new Validator();
@@ -364,18 +362,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorString = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorString", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorString must be between 3 and 1000.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorString", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorString must be between 3 and 1000.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double int is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleIntIsValidTests()
         {
             var validator = new Validator();
@@ -384,14 +382,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorInt = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double int is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleIntIsNotValidTests()
         {
             var validator = new Validator();
@@ -401,18 +399,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorInt = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorInt", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorInt must be between 3 and 10.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorInt", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorInt must be between 3 and 10.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double decimal is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleDecimalIsValidTests()
         {
             var validator = new Validator();
@@ -421,14 +419,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorDecimal = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double Decimal is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleDecimalIsNotValidTests()
         {
             var validator = new Validator();
@@ -438,18 +436,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorDecimal = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorDecimal", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorDecimal must be between 3.01 and 10.999.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorDecimal", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorDecimal must be between 3.01 and 10.999.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double float is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleFloatIsValidTests()
         {
             var validator = new Validator();
@@ -458,14 +456,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorFloat = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double float is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleFloatIsNotValidTests()
         {
             var validator = new Validator();
@@ -475,18 +473,18 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorFloat = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorFloat", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorFloat must be between 3 and 10.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorFloat", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorFloat must be between 3 and 10.", results.First().Message);
             }
         }
 
         /// <summary>
         /// Validates the range double long is valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleLongIsValidTests()
         {
             var validator = new Validator();
@@ -495,14 +493,14 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             foreach (var list in doubleList)
             {
                 objectTotest.RangeDoubleValidatorLong = list;
-                Assert.IsTrue(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
+                Assert.True(validator.IsValid(objectTotest), "Failed on: \"" + list + "\"");
             }
         }
 
         /// <summary>
         /// Validates the range double long is not valid tests.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void ValidateRangeDoubleLongIsNotValidTests()
         {
             var validator = new Validator();
@@ -512,11 +510,11 @@ namespace UCDArch.Tests.UCDArch.Core.DataAnnotationsValidator.CommonValidationAd
             {
                 objectTotest.RangeDoubleValidatorLong = list;
                 ICollection<IValidationResult> results = validator.ValidationResultsFor(objectTotest);
-                Assert.IsNotNull(results, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(1, results.Count, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("RangeDoubleValidatorLong", results.First().PropertyName, "Failed on: \"" + list + "\"");
-                Assert.AreEqual(typeof(CompleteObject), results.First().ClassContext, "Failed on: \"" + list + "\"");
-                Assert.AreEqual("The field RangeDoubleValidatorLong must be between 3 and 10.", results.First().Message, "Failed on: \"" + list + "\"");
+                Assert.NotNull(results);
+                Assert.Equal(1, results.Count);
+                Assert.Equal("RangeDoubleValidatorLong", results.First().PropertyName);
+                Assert.Equal(typeof(CompleteObject), results.First().ClassContext);
+                Assert.Equal("The field RangeDoubleValidatorLong must be between 3 and 10.", results.First().Message);
             }
         }
 
