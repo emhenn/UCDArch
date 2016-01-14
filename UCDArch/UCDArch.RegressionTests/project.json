@@ -3,12 +3,10 @@
     "UCDArch.Core": { "target": "project" },
     "UCDArch.Data": { "target": "project" },
     "UCDArch.Testing": { "target": "project" },
-    "System.Data.SQLite": "1.0.99"
+    "System.Data.SQLite": "1.0.99",
+    "System.Runtime": "4.0.0"
   },
   "frameworks": {
-    "net45": {
-      "dependencies": {
-      }
-    }
+    "dnx46": { }
   }
 }

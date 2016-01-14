@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Core;
 using UCDArch.Core.PersistanceSupport;
 using UCDArch.Data.NHibernate;
@@ -7,10 +6,10 @@ using UCDArch.RegressionTests.SampleMappings;
 using UCDArch.Testing;
 using System;
 using UCDArch.Testing.Extensions;
+using Xunit;
 
 namespace UCDArch.RegressionTests.Repository
 {
-    [TestClass]
     public class UnitRepositoryTests : FluentRepositoryTestBase<UnitMap>
     {
         private readonly IRepository<Unit> _repository = new Repository<Unit>();
@@ -24,31 +23,31 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Determines whether this instance [can save valid unit using generic repository].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanSaveValidUnitUsingGenericRepository()
         {
             var unit = CreateValidUnit();
 
-            Assert.AreEqual(true, unit.IsTransient());
+            Assert.Equal(true, unit.IsTransient());
 
             _repository.EnsurePersistent(unit);
 
-            Assert.AreEqual(false, unit.IsTransient());
+            Assert.Equal(false, unit.IsTransient());
         }
 
         /// <summary>
         /// Determines whether this instance [can save valid unit using non generic repository].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanSaveValidUnitUsingNonGenericRepository()
         {
             var unit = CreateValidUnit();
 
-            Assert.AreEqual(true, unit.IsTransient());
+            Assert.Equal(true, unit.IsTransient());
 
             Repository.OfType<Unit>().EnsurePersistent(unit);
 
-            Assert.AreEqual(false, unit.IsTransient());
+            Assert.Equal(false, unit.IsTransient());
         }
         #endregion Repository Tests
 
@@ -57,7 +56,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Units does not save with null full name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UnitDoesNotSaveWithNullFullName()
         {
             Unit unit = null;
@@ -66,18 +65,18 @@ namespace UCDArch.RegressionTests.Repository
                 unit = CreateValidUnit();
                 unit.FullName = null;
                 _repository.EnsurePersistent(unit);
-                Assert.Fail("Expected Application Exception");
+                Assert.True(false, "Expected Application Exception");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(unit);
+                Assert.NotNull(unit);
                 unit.ValidationResults().AsMessageList().AssertErrorsAre("The FullName field is required.");
             }
         }
         /// <summary>
         /// Units does not save with empty full name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UnitDoesNotSaveWithEmptyFullName()
         {
             Unit unit = null;
@@ -86,18 +85,18 @@ namespace UCDArch.RegressionTests.Repository
                 unit = CreateValidUnit();
                 unit.FullName = "";
                 _repository.EnsurePersistent(unit);
-                Assert.Fail("Expected Application Exception");
+                Assert.True(false, "Expected Application Exception");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(unit);
+                Assert.NotNull(unit);
                 unit.ValidationResults().AsMessageList().AssertErrorsAre("The FullName field is required.");
             }
         }
         /// <summary>
         /// Units does not save with Spaces Only full name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UnitDoesNotSaveWithSpacesOnlyFullName()
         {
             Unit unit = null;
@@ -106,18 +105,18 @@ namespace UCDArch.RegressionTests.Repository
                 unit = CreateValidUnit();
                 unit.FullName = " ";
                 _repository.EnsurePersistent(unit);
-                Assert.Fail("Expected Application Exception");
+                Assert.True(false, "Expected Application Exception");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(unit);
+                Assert.NotNull(unit);
                 unit.ValidationResults().AsMessageList().AssertErrorsAre("The FullName field is required.");
             }
         }
         /// <summary>
         /// Units does not save with Spaces Only full name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UnitDoesNotSaveWithTooLongFullName()
         {
             Unit unit = null;
@@ -126,11 +125,11 @@ namespace UCDArch.RegressionTests.Repository
                 unit = CreateValidUnit();
                 unit.FullName = "123456789 123456789 123456789 123456789 12345678901"; //51 characters long, max 50 allowed
                 _repository.EnsurePersistent(unit);
-                Assert.Fail("Expected Application Exception");
+                Assert.True(false, "Expected Application Exception");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(unit);
+                Assert.NotNull(unit);
                 unit.ValidationResults().AsMessageList().AssertErrorsAre("The field FullName must be a string with a maximum length of 50.");
             }
         }
@@ -151,29 +150,29 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Determines whether this instance [can get all units].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanGetAllUnits()
         {
             IList<Unit> allUnits = _repository.GetAll();
-            Assert.AreEqual(10, allUnits.Count, "Did not find the ten expected units.");
+            Assert.Equal(10, allUnits.Count);
         }
 
         /// <summary>
         /// Determines whether this instance [can save new unit].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanSaveNewUnit()
         {
             var unit = CreateValidUnit();
             unit.FullName = "Full1234Name"; //Just a random name. Used lower in code to check that we get it.
 
-            Assert.IsTrue(unit.IsTransient());
+            Assert.True(unit.IsTransient());
 
             NHibernateSessionManager.Instance.BeginTransaction();
             _repository.EnsurePersistent(unit);
             NHibernateSessionManager.Instance.CommitTransaction();
 
-            Assert.IsFalse(unit.IsTransient()); //Make sure the unit is saved
+            Assert.False(unit.IsTransient()); //Make sure the unit is saved
 
             NHibernateSessionManager.Instance.GetSession().Evict(unit);//get the unit out of the local cache
 
@@ -182,19 +181,19 @@ namespace UCDArch.RegressionTests.Repository
 
             var retrievedUser = _repository.GetNullableById(unitId);
 
-            Assert.IsNotNull(retrievedUser);
-            Assert.AreEqual("Full1234Name", retrievedUser.FullName); //Make sure it is the correct user
-            Assert.AreEqual(11, _repository.GetAll().Count);
+            Assert.NotNull(retrievedUser);
+            Assert.Equal("Full1234Name", retrievedUser.FullName); //Make sure it is the correct user
+            Assert.Equal(11, _repository.GetAll().Count);
         }
         /// <summary>
         /// Determines whether this instance [can modify unit].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanModifyUnit()
         {
             Unit firstUnit = _repository.GetNullableById(1); //Just get the first user
 
-            Assert.AreEqual("FullName1", firstUnit.FullName); //First user is scott
+            Assert.Equal("FullName1", firstUnit.FullName); //First user is scott
 
             NHibernateSessionManager.Instance.BeginTransaction();
             firstUnit.FullName = "NewFullName";
@@ -205,28 +204,28 @@ namespace UCDArch.RegressionTests.Repository
 
             firstUnit = _repository.GetNullableById(1); //Get the user back out
 
-            Assert.AreEqual("NewFullName", firstUnit.FullName); //the name should now be tiny
+            Assert.Equal("NewFullName", firstUnit.FullName); //the name should now be tiny
         }
 
         /// <summary>
         /// Determines whether this instance [can remove unit].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanRemoveUnit()
         {
             Unit firstUnit = _repository.GetNullableById(1); //Just get the first user
 
-            Assert.AreEqual("FullName1", firstUnit.FullName); //First user is scott
+            Assert.Equal("FullName1", firstUnit.FullName); //First user is scott
 
             NHibernateSessionManager.Instance.BeginTransaction();
             _repository.Remove(firstUnit);
             NHibernateSessionManager.Instance.CommitTransaction();
 
-            Assert.AreEqual(9, _repository.GetAll().Count); //There should be 9 users now
+            Assert.Equal(9, _repository.GetAll().Count); //There should be 9 users now
 
             Unit shouldNotExistUnit = _repository.GetNullableById(1);
 
-            Assert.IsNull(shouldNotExistUnit);
+            Assert.Null(shouldNotExistUnit);
         }
         #endregion CRUD Tests
 

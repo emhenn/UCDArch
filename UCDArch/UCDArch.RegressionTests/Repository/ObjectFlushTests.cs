@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using UCDArch.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.RegressionTests.SampleMappings;
 using UCDArch.Data.NHibernate;
+using Xunit;
 
 namespace UCDArch.RegressionTests.Repository
 {
     /// <summary>
     /// Tests to check object flushing/dirty checking behavior
     /// </summary>
-    [TestClass]
     public class ObjectFlushTests : FluentRepositoryTestBase<UnitMap>
     {
         protected override void LoadData()
@@ -37,7 +36,7 @@ namespace UCDArch.RegressionTests.Repository
             base.LoadData();
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangingLazyObjectDoesNotAutomaticallyFlushChanges()
         {
             var stats = NHibernateSessionManager.Instance.FactoryStatistics;
@@ -49,18 +48,18 @@ namespace UCDArch.RegressionTests.Repository
 
             var existingUnit = unitRepository.GetById(1); //Lazy load
 
-            Assert.IsFalse(existingUnit.IsTransient(), "The unit with id 1 should already exist");
+            Assert.False(existingUnit.IsTransient(), "The unit with id 1 should already exist");
 
-            Assert.AreEqual("FullName", existingUnit.FullName);
+            Assert.Equal("FullName", existingUnit.FullName);
 
             existingUnit.FullName = "ChangedName";
 
             unitRepository.DbContext.CommitTransaction();
 
-            Assert.AreEqual(0, stats.EntityUpdateCount, "No entities should have been updated without call to EnsurePersistent");
+            Assert.Equal(0, stats.EntityUpdateCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangingObjectDoesNotAutomaticallyFlushChanges()
         {
             var stats = NHibernateSessionManager.Instance.FactoryStatistics;
@@ -72,19 +71,19 @@ namespace UCDArch.RegressionTests.Repository
 
             var existingUnit = unitRepository.GetNullableById(1);
 
-            Assert.IsFalse(existingUnit.IsTransient(), "The unit with id 1 should already exist");
+            Assert.False(existingUnit.IsTransient(), "The unit with id 1 should already exist");
 
-            Assert.AreEqual("FullName", existingUnit.FullName);
+            Assert.Equal("FullName", existingUnit.FullName);
 
             existingUnit.FullName = "ChangedName";
 
             unitRepository.DbContext.CommitTransaction();
             
-            Assert.AreEqual(0, stats.EntityUpdateCount, "No entities should have been updated without call to EnsurePersistent");
+            Assert.Equal(0, stats.EntityUpdateCount);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void EnsurePersistSavesChangesWithLazyObject()
         {
             var stats = NHibernateSessionManager.Instance.FactoryStatistics;
@@ -96,9 +95,9 @@ namespace UCDArch.RegressionTests.Repository
 
             var existingUnit = unitRepository.GetById(1); //Lazy load
 
-            Assert.IsFalse(existingUnit.IsTransient(), "The unit with id 1 should already exist");
+            Assert.False(existingUnit.IsTransient(), "The unit with id 1 should already exist");
 
-            Assert.AreEqual("FullName", existingUnit.FullName);
+            Assert.Equal("FullName", existingUnit.FullName);
 
             existingUnit.FullName = "ChangedName";
 
@@ -106,10 +105,10 @@ namespace UCDArch.RegressionTests.Repository
             
             unitRepository.DbContext.CommitTransaction();
 
-            Assert.AreEqual(1, stats.EntityUpdateCount, "The existing unit should have been updated with the call to EnsurePersistent");
+            Assert.Equal(1, stats.EntityUpdateCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void EnsurePersistSavesChanges()
         {
             var stats = NHibernateSessionManager.Instance.FactoryStatistics;
@@ -121,9 +120,9 @@ namespace UCDArch.RegressionTests.Repository
 
             var existingUnit = unitRepository.GetNullableById(1);
 
-            Assert.IsFalse(existingUnit.IsTransient(), "The unit with id 1 should already exist");
+            Assert.False(existingUnit.IsTransient(), "The unit with id 1 should already exist");
 
-            Assert.AreEqual("FullName", existingUnit.FullName);
+            Assert.Equal("FullName", existingUnit.FullName);
 
             existingUnit.FullName = "ChangedName";
 
@@ -131,7 +130,7 @@ namespace UCDArch.RegressionTests.Repository
             
             unitRepository.DbContext.CommitTransaction();
 
-            Assert.AreEqual(1, stats.EntityUpdateCount, "The existing unit should have been updated with the call to EnsurePersistent");
+            Assert.Equal(1, stats.EntityUpdateCount);
         }
     }
 }

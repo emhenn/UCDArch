@@ -1,14 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UCDArch.Core.PersistanceSupport;
 using UCDArch.Data.NHibernate;
 using UCDArch.RegressionTests.SampleMappings;
 using UCDArch.Testing;
+using Xunit;
 
 //TODO: Maybe remove this unit test?
 namespace UCDArch.RegressionTests.Repository
 {
-    [TestClass]
     public class UnitAssociationRepositoryTests : FluentRepositoryTestBase<UnitAssociationMap>
     {
         private readonly IRepository<UnitAssociation> _unitAssociationRepository = new Repository<UnitAssociation>();
@@ -21,15 +20,15 @@ namespace UCDArch.RegressionTests.Repository
             CreateUnits();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSaveValidUnitAssociationUsingGenericRepository()
         {
             var newUnitAssociation = CreateValidUnitAssociation();
-            Assert.AreEqual(true, newUnitAssociation.IsTransient());
+            Assert.Equal(true, newUnitAssociation.IsTransient());
 
             _unitAssociationRepository.EnsurePersistent(newUnitAssociation);
 
-            Assert.AreEqual(false, newUnitAssociation.IsTransient());
+            Assert.Equal(false, newUnitAssociation.IsTransient());
         }
 
 

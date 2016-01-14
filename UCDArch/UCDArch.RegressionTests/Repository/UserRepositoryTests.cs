@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime;
 using UCDArch.Core.PersistanceSupport;
 using UCDArch.Data.NHibernate;
 using UCDArch.RegressionTests.SampleMappings;
 using UCDArch.Testing;
 using UCDArch.Testing.Extensions;
-
+using Xunit;
 
 namespace UCDArch.RegressionTests.Repository
 {
-    [TestClass]
     public class UserRepositoryTests : FluentRepositoryTestBase<UserMap>
     {
         private readonly IRepository<User> _repository = new Repository<User>();
@@ -30,35 +29,35 @@ namespace UCDArch.RegressionTests.Repository
 
         #region Repository Tests
 
-        [TestMethod]
+        [Fact]
         public void CanSaveValidUserUsingGenericRepository()
         {
             var user = new User {FirstName = "Valid", LastName = "Valid", LoginID = "Valid"};
 
-            Assert.AreEqual(true, user.IsTransient());
+            Assert.Equal(true, user.IsTransient());
 
             _repository.EnsurePersistent(user);
 
-            Assert.AreEqual(false, user.IsTransient());
+            Assert.Equal(false, user.IsTransient());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSaveValidUserUsingNonGenericRepository()
         {
             var user = new User {FirstName = "Valid", LastName = "Valid", LoginID = "Valid"};
 
-            Assert.AreEqual(true, user.IsTransient());
+            Assert.Equal(true, user.IsTransient());
 
             Repository.OfType<User>().EnsurePersistent(user);
 
-            Assert.AreEqual(false, user.IsTransient());
+            Assert.Equal(false, user.IsTransient());
         }
 
         #endregion Repository Tests
 
         #region Validation Tests
 
-        [TestMethod]
+        [Fact]
         public void WillNotSaveEmptyUser()
         {
             var user = new User();
@@ -66,7 +65,7 @@ namespace UCDArch.RegressionTests.Repository
             try
             {
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
@@ -79,7 +78,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does not save the User with null first name.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithNullFirstName()
         {
             User user = null;
@@ -88,11 +87,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.FirstName = null;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The FirstName field is required.");
             }
         }
@@ -100,7 +99,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with spaces only in first name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithSpacesOnlyInFirstName()
         {
             User user = null;
@@ -112,7 +111,7 @@ namespace UCDArch.RegressionTests.Repository
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The FirstName field is required.");
             }
         }
@@ -121,7 +120,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with an empty first name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithEmptyFirstName()
         {
             User user = null;
@@ -130,11 +129,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.FirstName = "";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The FirstName field is required.");
             }
         }
@@ -143,7 +142,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// User does not save with first name too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithFirstNameTooLong()
         {
             User user = null;
@@ -152,11 +151,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.FirstName = InvalidName;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field FirstName must be a string with a maximum length of 50.");
             }
@@ -170,7 +169,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does not save the User with null last name.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithNullLastName()
         {
             User user = null;
@@ -179,11 +178,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LastName = null;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LastName field is required.");
             }
         }
@@ -191,7 +190,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with spaces only in last name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithSpacesOnlyInLastName()
         {
             User user = null;
@@ -200,11 +199,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LastName = "  ";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LastName field is required.");
             }
         }
@@ -213,7 +212,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with an empty last name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithEmptyLastName()
         {
             User user = null;
@@ -225,7 +224,7 @@ namespace UCDArch.RegressionTests.Repository
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LastName field is required.");
             }
         }
@@ -234,7 +233,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// User does not save with last name too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithLastNameTooLong()
         {
             User user = null;
@@ -243,11 +242,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LastName = InvalidName;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field LastName must be a string with a maximum length of 50.");
             }
@@ -261,7 +260,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does not save the User with null loginID.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithNullLoginId()
         {
             User user = null;
@@ -270,11 +269,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LoginID = null;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LoginID field is required.");
             }
         }
@@ -282,7 +281,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with spaces only in loginID.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithSpacesOnlyInLoginId()
         {
             User user = null;
@@ -291,11 +290,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LoginID = "  ";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LoginID field is required.");
             }
         }
@@ -304,7 +303,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Does not save user with an empty loginID.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithEmptyLoginId()
         {
             User user = null;
@@ -313,11 +312,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.LoginID = "";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("The LoginID field is required.");
             }
         }
@@ -326,7 +325,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// User does not save with loginID too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithLoginIdTooLong()
         {
             User user = null;
@@ -338,7 +337,7 @@ namespace UCDArch.RegressionTests.Repository
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field LoginID must be a string with a maximum length of 10.");
             }
@@ -352,7 +351,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does not save the User with null email.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithNullEmail()
         {
             User user = CreateValidUser();
@@ -364,7 +363,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does save the User with null email.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithEmptyEmail()
         {
             User user = CreateValidUser();
@@ -376,7 +375,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Does not save the User with null email.
         /// Expected Error messages are found.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithSpacesOnlyEmail()
         {
             User user = null;
@@ -385,11 +384,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = " ";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -405,7 +404,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users the does not save with invalid email format 1.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithInvalidEmailFormat1()
         {
             User user = null;
@@ -414,11 +413,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = "Abc.example.com";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -426,7 +425,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users the does not save with invalid email format 2.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithInvalidEmailFormat2()
         {
             User user = null;
@@ -435,11 +434,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = "Abc.@example.com";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -447,7 +446,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users the does not save with invalid email format 3.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithInvalidEmailFormat3()
         {
             User user = null;
@@ -456,11 +455,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = "Abc..123@example.com";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -468,7 +467,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users the does not save with invalid email format 4.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithInvalidEmailFormat4()
         {
             User user = null;
@@ -477,11 +476,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = "A@b@c@example.com";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -489,7 +488,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users the does not save with invalid email format 5.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithInvalidEmailFormat5()
         {
             User user = null;
@@ -498,11 +497,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.Email = "()[]\\;:,<>@example.com";
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre("Not a well-formed email address.");
             }
         }
@@ -514,7 +513,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with null employee id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithNullEmployeeId()
         {
             User user = CreateValidUser();
@@ -525,7 +524,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with empty employee id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithEmptyEmployeeId()
         {
             User user = CreateValidUser();
@@ -536,7 +535,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with spaces only employee id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithSpacesOnlyEmployeeId()
         {
             User user = CreateValidUser();
@@ -547,7 +546,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with valid length employee id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithValidLengthEmployeeId()
         {
             User user = CreateValidUser();
@@ -558,7 +557,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users does not save with employee id too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithEmployeeIdTooLong()
         {
             User user = null;
@@ -567,11 +566,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.EmployeeID = "1234567890"; //Max nine characters
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected Exception");
+                Assert.True(false, "Expected Exception");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field EmployeeID must be a string with a maximum length of 9.");
             }
@@ -584,7 +583,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with null Student id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithNullStudentId()
         {
             User user = CreateValidUser();
@@ -595,7 +594,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with empty Student id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithEmptyStudentId()
         {
             User user = CreateValidUser();
@@ -606,7 +605,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with spaces only Student id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithSpacesOnlyStudentId()
         {
             User user = CreateValidUser();
@@ -617,7 +616,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users saves with valid length Student id.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserSavesWithValidLengthStudentId()
         {
             User user = CreateValidUser();
@@ -628,7 +627,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users does not save with Student id too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithStudentIdTooLong()
         {
             User user = null;
@@ -637,11 +636,11 @@ namespace UCDArch.RegressionTests.Repository
                 user = CreateValidUser();
                 user.StudentID = "1234567890"; //Max nine characters
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field StudentID must be a string with a maximum length of 9.");
             }
@@ -654,7 +653,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// User does not save with first and last name too long.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithFirstAndLastNameTooLong()
         {
             User user = null;
@@ -664,11 +663,11 @@ namespace UCDArch.RegressionTests.Repository
                 user.FirstName = InvalidName;
                 user.LastName = InvalidName;
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The field FirstName must be a string with a maximum length of 50.",
                     "The field LastName must be a string with a maximum length of 50.");
@@ -678,7 +677,7 @@ namespace UCDArch.RegressionTests.Repository
         /// <summary>
         /// Users does not save with many errors.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void UserDoesNotSaveWithManyErrors()
         {
             User user = null;
@@ -693,11 +692,11 @@ namespace UCDArch.RegressionTests.Repository
                 user.EmployeeID = "1234567890"; //Too long
                 user.StudentID = "1234567890"; //Too long
                 _repository.EnsurePersistent(user);
-                Assert.Fail("Expected ApplicationException");
+                Assert.True(false, "Expected ApplicationException");
             }
             catch (ApplicationException)
             {
-                Assert.IsNotNull(user);
+                Assert.NotNull(user);
                 user.ValidationResults().AsMessageList().AssertErrorsAre(
                     "The FirstName field is required.", "The LastName field is required.",
                     "The LoginID field is required.",
@@ -719,30 +718,30 @@ namespace UCDArch.RegressionTests.Repository
         /// CRUD Tests
         /// Determines whether this instance [can get all users].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanGetAllUsers()
         {
             IList<User> allUsers = _repository.GetAll();
-            Assert.AreEqual(10, allUsers.Count, "Did not find the ten expected users.");
+            Assert.Equal(10, allUsers.Count);
         }
 
         /// <summary>
         /// CRUD tests
         /// Determines whether this instance [can save new user].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanSaveNewUser()
         {
             var user = CreateValidUser();
             user.LoginID = "745293HBFE"; //Just a random login id. Used lower in code to check that we get it.
 
-            Assert.IsTrue(user.IsTransient());
+            Assert.True(user.IsTransient());
 
             NHibernateSessionManager.Instance.BeginTransaction();
             _repository.EnsurePersistent(user);
             NHibernateSessionManager.Instance.CommitTransaction();
 
-            Assert.IsFalse(user.IsTransient()); //Make sure the user is saved
+            Assert.False(user.IsTransient()); //Make sure the user is saved
 
             NHibernateSessionManager.Instance.GetSession().Evict(user); //get the user out of the local cache
 
@@ -751,9 +750,9 @@ namespace UCDArch.RegressionTests.Repository
 
             var retrievedUser = _repository.GetNullableById(userId);
 
-            Assert.IsNotNull(retrievedUser);
-            Assert.AreEqual("745293HBFE", retrievedUser.LoginID); //Make sure it is the correct user
-            Assert.AreEqual(11, _repository.GetAll().Count);
+            Assert.NotNull(retrievedUser);
+            Assert.Equal("745293HBFE", retrievedUser.LoginID); //Make sure it is the correct user
+            Assert.Equal(11, _repository.GetAll().Count);
         }
 
         //TODO: These tests
@@ -763,12 +762,12 @@ namespace UCDArch.RegressionTests.Repository
         /// CRUD Tests
         /// Determines whether this instance [can modify user].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanModifyUser()
         {
             User firstUser = _repository.GetNullableById(1); //Just get the first user
 
-            Assert.AreEqual("Scott", firstUser.FirstName); //First user is scott
+            Assert.Equal("Scott", firstUser.FirstName); //First user is scott
 
             NHibernateSessionManager.Instance.BeginTransaction();
             firstUser.FirstName = "Tiny";
@@ -780,28 +779,28 @@ namespace UCDArch.RegressionTests.Repository
 
             firstUser = _repository.GetNullableById(1); //Get the user back out
 
-            Assert.AreEqual("Tiny", firstUser.FirstName); //the name should now be tiny
+            Assert.Equal("Tiny", firstUser.FirstName); //the name should now be tiny
         }
 
         /// <summary>
         /// Determines whether this instance [can remove user].
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanRemoveUser()
         {
             User firstUser = _repository.GetNullableById(1); //Just get the first user
 
-            Assert.AreEqual("Scott", firstUser.FirstName); //First user is scott
+            Assert.Equal("Scott", firstUser.FirstName); //First user is scott
 
             NHibernateSessionManager.Instance.BeginTransaction();
             _repository.Remove(firstUser);
             NHibernateSessionManager.Instance.CommitTransaction();
 
-            Assert.AreEqual(9, _repository.GetAll().Count); //There should be 9 users now
+            Assert.Equal(9, _repository.GetAll().Count); //There should be 9 users now
 
             User shouldNotExistUser = _repository.GetNullableById(1);
 
-            Assert.IsNull(shouldNotExistUser);
+            Assert.Null(shouldNotExistUser);
         }
 
         /// <summary>
@@ -809,7 +808,7 @@ namespace UCDArch.RegressionTests.Repository
         /// Create UserAssociations to that user and existing Units
         /// Get the user and assert that the UserAssociations exist as expected.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void CanGetUserWithSavedAssociations()
         {
             #region Create a User
@@ -818,13 +817,13 @@ namespace UCDArch.RegressionTests.Repository
             user.LoginID = "XXX123HBFE";
                 //Just a random login id. Used lower in code to check that we get it.            
 
-            Assert.IsTrue(user.IsTransient());
+            Assert.True(user.IsTransient());
 
             NHibernateSessionManager.Instance.BeginTransaction();
             _repository.EnsurePersistent(user);
             NHibernateSessionManager.Instance.CommitTransaction();
 
-            Assert.IsFalse(user.IsTransient()); //Make sure the user is saved
+            Assert.False(user.IsTransient()); //Make sure the user is saved
 
             NHibernateSessionManager.Instance.GetSession().Evict(user); //get the user out of the local cache
 
@@ -833,9 +832,9 @@ namespace UCDArch.RegressionTests.Repository
 
             var retrievedUser = _repository.GetNullableById(userId);
 
-            Assert.IsNotNull(retrievedUser);
-            Assert.AreEqual("XXX123HBFE", retrievedUser.LoginID); //Make sure it is the correct user
-            Assert.AreEqual(11, _repository.GetAll().Count);
+            Assert.NotNull(retrievedUser);
+            Assert.Equal("XXX123HBFE", retrievedUser.LoginID); //Make sure it is the correct user
+            Assert.Equal(11, _repository.GetAll().Count);
 
             #endregion Create a User
 
@@ -871,13 +870,13 @@ namespace UCDArch.RegressionTests.Repository
 
             User modifyUser = _repository.GetNullableById(userId);
 
-            Assert.AreEqual("XXX123HBFE", modifyUser.LoginID);
+            Assert.Equal("XXX123HBFE", modifyUser.LoginID);
 
-            Assert.IsNotNull(modifyUser.UnitAssociations);
-            Assert.AreEqual(5, modifyUser.UnitAssociations.Count);
+            Assert.NotNull(modifyUser.UnitAssociations);
+            Assert.Equal(5, modifyUser.UnitAssociations.Count);
             foreach (var list in filteredUnitAssociations)
             {
-                Assert.IsTrue(modifyUser.UnitAssociations.Contains(list));
+                Assert.True(modifyUser.UnitAssociations.Contains(list));
             }
 
 
@@ -890,13 +889,13 @@ namespace UCDArch.RegressionTests.Repository
 
             //modifyUser = _repository.GetById(userId); //Get the user back out
 
-            //Assert.AreEqual("XXX123HBFE", modifyUser.FirstName);
+            //Assert.Equal("XXX123HBFE", modifyUser.FirstName);
 
-            //Assert.IsNotNull(modifyUser.UnitAssociations);
-            //Assert.AreEqual(5, modifyUser.UnitAssociations.Count);
+            //Assert.NotNull(modifyUser.UnitAssociations);
+            //Assert.Equal(5, modifyUser.UnitAssociations.Count);
             //foreach (var list in filteredUnitAssociations)
             //{
-            //    Assert.IsTrue(modifyUser.UnitAssociations.Contains(list));
+            //    Assert.True(modifyUser.UnitAssociations.Contains(list));
             //}
 
             #endregion Modify user
