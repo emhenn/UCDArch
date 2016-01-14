@@ -8,9 +8,7 @@
     "UCDArch.Testing": { "target": "project" }
   },
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-      }
+    "dnx46": {
     }
   }
 }
